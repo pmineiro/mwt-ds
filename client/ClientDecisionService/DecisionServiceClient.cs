@@ -128,14 +128,13 @@ namespace Microsoft.Research.MultiWorldTesting.ClientLibrary
             if (initialFullExplorer == null)
                 initialFullExplorer = new PermutationExplorer(1);
 
-            var match = Regex.Match(metaData.TrainArguments, @"--cb_explore\s+(?<numActions>\d+)");
-            if (match.Success)
+            int? numActions = metaData.TrainingNumberOfActions;
+            if (numActions.HasValue)
             {
-                var numActions = int.Parse(match.Groups["numActions"].Value);
-                this.numActionsProvider = new ConstantNumActionsProvider(numActions);
+                this.numActionsProvider = new ConstantNumActionsProvider(numActions.Value);
 
                 this.mwtExplorer = MwtExplorer.Create(appId,
-                    numActions, this.recorder, explorer, initialPolicy, initialFullExplorer, initialExplorer);
+                    numActions.Value, this.recorder, explorer, initialPolicy, initialFullExplorer, initialExplorer);
             }
             else
             {

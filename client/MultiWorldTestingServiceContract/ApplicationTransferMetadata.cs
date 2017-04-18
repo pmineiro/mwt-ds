@@ -4,6 +4,9 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
 namespace Microsoft.Research.MultiWorldTesting.Contract
 {
     /// <summary>
@@ -39,9 +42,51 @@ namespace Microsoft.Research.MultiWorldTesting.Contract
         public string ApplicationID { get; set; }
 
         /// <summary>
-        /// Training arguments to be used in training service.
+        /// Training arguments to be used in training service.  
+        /// (Deprecated: these are VW specific)
         /// </summary>
         public string TrainArguments { get; set; }
+
+        /// <summary>
+        /// Generic training arguments to be used in the training service.
+        /// </summary>
+        public Dictionary<string, string> GenericTrainArguments { get; set; }
+
+        /// <summary>
+        /// Method for determining if a fixed number of actions has been specified for the training service.
+        /// Abstracts over VW arguments and generic arguments.
+        /// </summary>
+        public int? TrainingNumberOfActions
+        {
+            get
+            {
+                if (this.GenericTrainArguments != null)
+                {
+                    string value;
+
+                    if (this.GenericTrainArguments.TryGetValue("numActions", out value))
+                    {
+                        return int.Parse(value);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    var match = Regex.Match(this.TrainArguments, @"--cb_explore\s+(?<numActions>\d+)");
+                    if (match.Success)
+                    {
+                        return int.Parse(match.Groups["numActions"].Value);
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// The EventHub connection string to which the client needs to send interaction data.
