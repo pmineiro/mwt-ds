@@ -14,6 +14,8 @@ namespace DecisionServicePrivateWeb.Classes
 
         public string TrainArguments { get; set; }
 
+        public string BYOMTrainArguments { get; set; }
+
         public string ApplicationID { get; set; }
 
         public string ConnectionString { get; set; }

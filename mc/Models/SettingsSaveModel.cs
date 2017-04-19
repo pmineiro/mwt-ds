@@ -7,6 +7,8 @@ namespace DecisionServicePrivateWeb.Models
     {
         public string TrainArguments { get; set; }
 
+        public string BYOMTrainArguments { get; set; }
+
         public string SelectedModelId { get; set; }
 
         public bool IsExplorationEnabled { get; set; }

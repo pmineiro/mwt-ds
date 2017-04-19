@@ -124,6 +124,15 @@ namespace DecisionServicePrivateWeb {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BYOM Arguments ::: Arguments that control training and exploration for an non-VW model.  Should be a serialized JSON dictionary with string values..
+        /// </summary>
+        public static string BYOMTrainArguments {
+            get {
+                return ResourceManager.GetString("BYOMTrainArguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actions With Features ::: Do actions come with features? Such features are called Action-Dependent Features and are included in the context. .
         /// </summary>
         public static string DecisionType {

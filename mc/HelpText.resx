@@ -165,6 +165,9 @@
   <data name="TrainArguments" xml:space="preserve">
     <value>VW Arguments ::: VW arguments that control training and exploration. Only change this if you're sure what the flags mean in VW. For more information, refer to the wiki at https://github.com/JohnLangford/vowpal_wabbit/wiki.</value>
   </data>
+  <data name="BYOMTrainArguments" xml:space="preserve">
+    <value>BYOM Arguments ::: Arguments that control training and exploration for an non-VW model.  Should be a serialized JSON dictionary with string values.</value>
+  </data>
   <data name="TrainFrequency" xml:space="preserve">
     <value>Training Frequency ::: High frequency corresponds to online training where data points are continuously used for learning. Low frequency corresponds to batch training which occurs at longer time intervals (e.g. every 5 minutes or once a day).</value>
   </data>

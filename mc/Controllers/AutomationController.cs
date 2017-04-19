@@ -24,7 +24,7 @@ namespace DecisionServicePrivateWeb.Controllers
     public class AutomationController : Controller
     {
         [HttpGet]
-        public async Task UpdateSettings(string trainArguments = null, float? initialExplorationEpsilon = null, bool? isExplorationEnabled = null)
+        public async Task UpdateSettings(string trainArguments = null, string byomtrainArguments = null, float? initialExplorationEpsilon = null, bool? isExplorationEnabled = null)
         {
             var token = Request.Headers["auth"];
             if (token != ConfigurationManager.AppSettings[ApplicationMetadataStore.AKPassword])
@@ -33,7 +33,7 @@ namespace DecisionServicePrivateWeb.Controllers
             var telemetry = new TelemetryClient();
             try
             {
-                telemetry.TrackTrace($"UpdateSettings(trainArguments={trainArguments}, initialExplorationEpsilon={initialExplorationEpsilon}, isExplorationEnabled={isExplorationEnabled})");
+                telemetry.TrackTrace($"UpdateSettings(trainArguments={trainArguments}, byomtrainArguments=${byomtrainArguments}, initialExplorationEpsilon={initialExplorationEpsilon}, isExplorationEnabled={isExplorationEnabled})");
 
                 string azureStorageConnectionString = ConfigurationManager.AppSettings[ApplicationMetadataStore.AKConnectionString];
                 var storageAccount = CloudStorageAccount.Parse(azureStorageConnectionString);
@@ -49,6 +49,9 @@ namespace DecisionServicePrivateWeb.Controllers
 
                 if (trainArguments != null)
                     clientMeta.TrainArguments = trainArguments;
+
+                if (byomtrainArguments != null)
+                    clientMeta.BYOMTrainArguments = byomtrainArguments;
 
                 if (initialExplorationEpsilon != null)
                     clientMeta.InitialExplorationEpsilon = (float)initialExplorationEpsilon;

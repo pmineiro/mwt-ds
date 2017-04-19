@@ -30,6 +30,7 @@ namespace DecisionServicePrivateWeb.Controllers
         [HttpPost]
         public ActionResult Validate()
         {
+            // TODO: BYOM (?)
             try
             {
                 APIUtil.Authenticate(this.Request);

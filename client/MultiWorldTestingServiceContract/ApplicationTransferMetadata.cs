@@ -4,6 +4,7 @@
 // </copyright>
 //------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -42,15 +43,14 @@ namespace Microsoft.Research.MultiWorldTesting.Contract
         public string ApplicationID { get; set; }
 
         /// <summary>
-        /// Training arguments to be used in training service.  
-        /// (Deprecated: these are VW specific)
+        /// VW-specific training arguments to be used in training service.  
         /// </summary>
         public string TrainArguments { get; set; }
 
         /// <summary>
         /// BYOM training arguments to be used in the training service.
         /// </summary>
-        public Dictionary<string, string> BYOMTrainArguments { get; set; }
+        public string BYOMTrainArguments { get; set; }
 
         /// <summary>
         /// Method for determining if a fixed number of actions has been specified for the training service.
@@ -60,30 +60,17 @@ namespace Microsoft.Research.MultiWorldTesting.Contract
         {
             get
             {
-                if (this.BYOMTrainArguments != null)
+                if (string.IsNullOrEmpty(this.BYOMTrainArguments))
                 {
-                    string value;
-
-                    if (this.BYOMTrainArguments.TryGetValue("numActions", out value))
-                    {
-                        return int.Parse(value);
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    var match = Regex.Match(this.TrainArguments, @"--cb_explore\s+(?<numActions>\d+)");
+                    return match.Success ? int.Parse(match.Groups["numActions"].Value) : (int?)null;
                 }
                 else
                 {
-                    var match = Regex.Match(this.TrainArguments, @"--cb_explore\s+(?<numActions>\d+)");
-                    if (match.Success)
-                    {
-                        return int.Parse(match.Groups["numActions"].Value);
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(this.BYOMTrainArguments);
+                    string value;
+
+                    return dict.TryGetValue("numActions", out value) ? int.Parse(value) : (int?)null;
                 }
             }
         }

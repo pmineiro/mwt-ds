@@ -147,6 +147,7 @@ namespace DecisionServicePrivateWeb.Controllers
                     clientMeta.IsExplorationEnabled = model.IsExplorationEnabled;
                     clientMeta.InitialExplorationEpsilon = model.InitialExplorationEpsilon;
                     clientMeta.TrainArguments = model.TrainArguments;
+                    clientMeta.BYOMTrainArguments = model.BYOMTrainArguments;
                     var clientSettingsBlob = (CloudBlockBlob)Session[SKClientSettingsBlob];
                     clientSettingsBlob.UploadText(JsonConvert.SerializeObject(clientMeta));
 
@@ -475,6 +476,7 @@ namespace DecisionServicePrivateWeb.Controllers
                 AzureSubscriptionId = extraMetadata.SubscriptionId,
                 DecisionType = extraMetadata.DecisionType == DecisionType.SingleAction ? DecisionDisplayType.No : DecisionDisplayType.Yes,
                 TrainArguments = clientMetadata.TrainArguments,
+                BYOMTrainArguments = clientMetadata.BYOMTrainArguments,
                 AzureStorageConnectionString = ConfigurationManager.AppSettings[ApplicationMetadataStore.AKConnectionString],
                 AzureResourceGroupName = extraMetadata.AzureResourceGroupName,
                 ApplicationInsightsInstrumentationKey = ConfigurationManager.AppSettings[ApplicationMetadataStore.AKAppInsightsKey],

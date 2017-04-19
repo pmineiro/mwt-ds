@@ -28,6 +28,7 @@ namespace DecisionServicePrivateWeb.Classes
         public const string AKWebServiceToken = "webServiceToken";
         public const string AKCheckpointPolicy = "checkpointPolicy";
         public const string AKTrainArguments = "vowpalWabbitTrainArguments";
+        public const string AKBYOMTrainArguments = "BYOMTrainArguments";
         public const string AKNumActions = "numberOfActions";
         public const string AKSubscriptionId = "subscriptionId";
         public const string AKExpUnitDuration = "experimentalUnitDurationInSeconds";
@@ -86,6 +87,7 @@ namespace DecisionServicePrivateWeb.Classes
                         DecisionType = DecisionType.MultiActions, // TODO: update depending on deployment option
                         ModelId = ApplicationSettingConstants.UseLatestModelSetting,
                         TrainArguments = ConfigurationManager.AppSettings[AKTrainArguments],
+                        BYOMTrainArguments = ConfigurationManager.AppSettings[AKBYOMTrainArguments],
                         TrainFrequency = TrainFrequency.High, // TODO: update depending on deployment option
                         ModelBlobUri = modelBlob.Uri + modelSASToken,
                         AppInsightsKey = ConfigurationManager.AppSettings[AKAppInsightsKey],
@@ -197,6 +199,7 @@ namespace DecisionServicePrivateWeb.Classes
                     IsExplorationEnabled = appSettings.IsExplorationEnabled,
                     ModelBlobUri = appSettings.ModelBlobUri,
                     TrainArguments = appSettings.TrainArguments,
+                    BYOMTrainArguments = appSettings.BYOMTrainArguments,
                     AppInsightsKey = appSettings.AppInsightsKey,
                     InitialExplorationEpsilon = appSettings.InitialExplorationEpsilon
                 },

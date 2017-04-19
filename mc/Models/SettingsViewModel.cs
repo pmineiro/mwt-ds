@@ -16,6 +16,7 @@ namespace DecisionServicePrivateWeb.Models
         public string ASAJoinName { get; set; }
         public DecisionDisplayType DecisionType { get; set; }
         public string TrainArguments { get; set; }
+        public string BYOMTrainArguments { get; set; }
         public string AzureStorageConnectionString { get; set; }
         public string EventHubInteractionConnectionString { get; set; }
         public string EventHubObservationConnectionString { get; set; }
