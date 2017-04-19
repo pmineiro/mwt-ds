@@ -48,9 +48,9 @@ namespace Microsoft.Research.MultiWorldTesting.Contract
         public string TrainArguments { get; set; }
 
         /// <summary>
-        /// Generic training arguments to be used in the training service.
+        /// BYOM training arguments to be used in the training service.
         /// </summary>
-        public Dictionary<string, string> GenericTrainArguments { get; set; }
+        public Dictionary<string, string> BYOMTrainArguments { get; set; }
 
         /// <summary>
         /// Method for determining if a fixed number of actions has been specified for the training service.
@@ -60,11 +60,11 @@ namespace Microsoft.Research.MultiWorldTesting.Contract
         {
             get
             {
-                if (this.GenericTrainArguments != null)
+                if (this.BYOMTrainArguments != null)
                 {
                     string value;
 
-                    if (this.GenericTrainArguments.TryGetValue("numActions", out value))
+                    if (this.BYOMTrainArguments.TryGetValue("numActions", out value))
                     {
                         return int.Parse(value);
                     }

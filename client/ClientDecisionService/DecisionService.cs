@@ -1,6 +1,8 @@
 ﻿using Microsoft.Research.MultiWorldTesting.Contract;
 using Microsoft.Research.MultiWorldTesting.ExploreLibrary;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using VW;
 
@@ -27,20 +29,44 @@ namespace Microsoft.Research.MultiWorldTesting.ClientLibrary
             return metaData;
         }
 
-        public static DecisionServiceClient<TContext> Create<TContext>(DecisionServiceConfiguration config, ITypeInspector typeInspector = null, ApplicationClientMetadata metaData = null)
+        public static DecisionServiceClient<TContext> CreateBYOM<TContext, T>(
+            Func<Stream, ITypeInspector, bool, T> create,
+            DecisionServiceConfiguration config,
+            ITypeInspector typeInspector = null,
+            ApplicationClientMetadata metaData = null) where T : IContextMapper<TContext, ActionProbability[]>
         {
             return new DecisionServiceClient<TContext>(
                 config,
                 DownloadMetadata(config, metaData),
-                new VWExplorer<TContext>(config.ModelStream, typeInspector, config.DevelopmentMode));
+                create(config.ModelStream, typeInspector, config.DevelopmentMode)); 
         }
 
-        public static DecisionServiceClient<string> CreateJson(DecisionServiceConfiguration config, ApplicationClientMetadata metaData = null)
+        public static DecisionServiceClient<TContext> Create<TContext>(DecisionServiceConfiguration config, ITypeInspector typeInspector = null, ApplicationClientMetadata metaData = null)
+        {
+            return CreateBYOM<TContext, VWExplorer<TContext>>(
+                (ms, ti, md) => new VWExplorer<TContext>(ms, ti, md),
+                config,
+                typeInspector,
+                metaData);
+        }
+
+        public static DecisionServiceClient<string> CreateBYOMJson<T>(
+            Func<Stream, bool, T> create,
+            DecisionServiceConfiguration config,
+            ApplicationClientMetadata metaData = null) where T : IContextMapper<string, ActionProbability[]>
         {
             return new DecisionServiceClient<string>(
                 config,
                 DownloadMetadata(config, metaData),
-                new VWJsonExplorer(config.ModelStream, config.DevelopmentMode));
+                create(config.ModelStream, config.DevelopmentMode)); 
+        }
+
+        public static DecisionServiceClient<string> CreateJson(DecisionServiceConfiguration config, ApplicationClientMetadata metaData = null)
+        {
+            return CreateBYOMJson(
+                (ms, dm) => new VWJsonExplorer(ms, dm),
+                config,
+                metaData);
         }
     }
 }
